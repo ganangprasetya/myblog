@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'slug'
+    ];
+
+    //relasi one to many ke post
+    public function post()
+    {
+        return $this->hasMany('App\Post', 'category_id');
+    }
 }

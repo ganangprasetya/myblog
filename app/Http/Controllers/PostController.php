@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Post;
+
 class PostController extends Controller
 {
     /**
@@ -34,7 +36,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        Post::create([
+            'title' => request('title'),
+            'slug'  => str_slug(request('title')),
+            'content' => request('content'),
+            'category_id' => request('category_id')
+        ]);
+        // Session::flash('flash_message', 'Data Kecamatan berhasil disimpan.');
+        return redirect()->route('home');
     }
 
     /**
