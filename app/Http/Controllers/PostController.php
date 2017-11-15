@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Post;
 
+use Session;
+
 class PostController extends Controller
 {
     /**
@@ -15,7 +17,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $post = Post::all();
+        return view('post.index', compact('post'));
     }
 
     /**
@@ -43,8 +46,7 @@ class PostController extends Controller
             'content' => request('content'),
             'category_id' => request('category_id')
         ]);
-        // Session::flash('flash_message', 'Data Kecamatan berhasil disimpan.');
-        return redirect()->route('home');
+        return redirect()->route('post.index')->withSuccess('Post Berhasil Disimpan');
     }
 
     /**
@@ -66,7 +68,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('post.edit', compact('post'));
     }
 
     /**
@@ -78,7 +81,10 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->update($request->all());
+        // Session::flash('flash_message', 'Data post berhasil diupdate.');
+        return redirect()->route('post.index')->withInfo('Post Berhasil Diubah');;
     }
 
     /**
@@ -89,6 +95,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        // Session::flash('flash_message', 'Data post berhasil dihapus.');
+        return redirect()->route('post.index')->withDanger('Post Berhasil Dihapus');;
     }
 }
