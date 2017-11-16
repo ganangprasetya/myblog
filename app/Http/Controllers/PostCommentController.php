@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Post;
 
-use Session;
+use App\Comment;
 
-class PostController extends Controller
+class PostCommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post = Post::all();
-        return view('post.index', compact('post'));
+        //
     }
 
     /**
@@ -28,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        //
     }
 
     /**
@@ -37,15 +36,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        Post::create([
-            'title' => request('title'),
-            'slug'  => str_slug(request('title')),
-            'content' => request('content'),
-            'category_id' => request('category_id')
-        ]);
-        return redirect()->route('post.index')->withSuccess('Post Berhasil Disimpan');
+        $post->comments()->create(array_merge($request->only('message')
+                                             ,['user_id' => auth()->id()]));
+        return redirect()->back();
     }
 
     /**
@@ -56,8 +51,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('post.show', compact('post'));
+        //
     }
 
     /**
@@ -68,8 +62,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
-        return view('post.edit', compact('post'));
+        //
     }
 
     /**
@@ -81,10 +74,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $post->update($request->all());
-        // Session::flash('flash_message', 'Data post berhasil diupdate.');
-        return redirect()->route('post.index')->withInfo('Post Berhasil Diubah');;
+        //
     }
 
     /**
@@ -95,9 +85,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
-        // Session::flash('flash_message', 'Data post berhasil dihapus.');
-        return redirect()->route('post.index')->withDanger('Post Berhasil Dihapus');;
+        //
     }
 }

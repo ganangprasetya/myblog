@@ -13,11 +13,12 @@
                             {!! Form::close() !!}
                         </div>
                         <div class="pull-right">
-                            <a class="btn btn-xs btn-default" href="{{ route('post.edit',$objek->id) }}">Update</a></button>
+                            <a class="btn btn-xs btn-default" href="{{ route('post.edit',$objek->id) }}">Update</a>
                         </div>
                     </div>
                     <div class="panel-body">
-                        {{ $objek->content }}
+                        {{ str_limit($objek->content, 100, '...') }}
+                        <a class="btn btn-xs btn-info" href="{{ route('post.show', $objek->id) }}">Read More</a>
                     </div>
                 </div>
             </div>
